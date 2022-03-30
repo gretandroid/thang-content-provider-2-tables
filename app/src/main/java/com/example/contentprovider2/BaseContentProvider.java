@@ -1,8 +1,12 @@
 package com.example.contentprovider2;
+import static com.example.contentprovider2.ContractProvider.*;
+import static com.example.contentprovider2.ContractProvider.Chapitre.*;
+import static com.example.contentprovider2.ContractProvider.Person.*;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -19,6 +23,13 @@ public class BaseContentProvider extends ContentProvider {
     // from AndroidManifest.provider.android:authorities
 //    public static final Uri CONTENTURI =  Uri.parse("content://com.example.contentprovider2.BaseContentProvider");
 
+    private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
+    static {
+        URI_MATCHER.addURI(AUTHORITIES, TABLE_CHAPITRE, 1);
+        URI_MATCHER.addURI(AUTHORITIES, TABLE_CHAPITRE + "/#" , 2);
+        URI_MATCHER.addURI(AUTHORITIES, TABLE_PERSON, 3);
+        URI_MATCHER.addURI(AUTHORITIES, TABLE_PERSON + "/#", 4);
+    }
     // on declare le helper pour ouvrir une session à chaque lecture/écriture
     private DatabaseSQliteHelper dbHelper;
 
@@ -34,37 +45,32 @@ public class BaseContentProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        if (uri.equals(PersonContentProvider.URI)) {
-            return query(uri, projection, selection, selectionArgs, sortOrder, db, PersonContentProvider.TABLE_NAME, ContractProvider.COL_PERSON_ID);
-        }
-        if (uri.equals(ChapitreContentProvider.URI)) {
-            return query(uri, projection, selection, selectionArgs, sortOrder, db, ChapitreContentProvider.TABLE_NAME, ContractProvider.COL_CHAPITRE_ID);
+        switch (URI_MATCHER.match(uri)) {
+            case 1 :
+                return db.query(TABLE_CHAPITRE,
+                        projection,
+                        selection,
+                        selectionArgs, null, null, sortOrder);
+            case 2 :
+                return db.query(TABLE_CHAPITRE,
+                        projection,
+                        COL_CHAPITRE_ID  + " = " + uri.getLastPathSegment() ,
+                        selectionArgs, null, null, sortOrder);
+                case 3 :
+                return db.query(TABLE_PERSON,
+                        projection,
+                        selection,
+                        selectionArgs, null, null, sortOrder);
+
+            case 4 :
+                return db.query(TABLE_PERSON,
+                        projection,
+                        COL_PERSON_ID  + " = " + uri.getLastPathSegment() ,
+                        selectionArgs, null, null, sortOrder);
+            default :
+                return null;
         }
 
-        return null;
-    }
-
-    private Cursor query(@NonNull Uri uri,
-                         String [] projection,
-                         @Nullable String selection,
-                         String [] selectionArgs,
-                         @Nullable String sortOrder,
-                         SQLiteDatabase db,
-                         String tableName,
-                         String idColumnName) {
-        long id = getId(uri);
-        if (id < 0) {
-            return db.query(tableName,
-                    projection,
-                    selection,
-                    selectionArgs, null, null, sortOrder);
-        }
-        else {
-            return db.query(tableName,
-                    projection,
-                    idColumnName  + " = " + id ,
-                    selectionArgs, null, null, sortOrder);
-        }
     }
 
     @Nullable
@@ -76,15 +82,17 @@ public class BaseContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
+
         // Creation ou MAJ de la BDD
         try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
-            if (uri.equals(PersonContentProvider.URI)) {
-                return insert(uri, values, db, PersonContentProvider.TABLE_NAME);
+            switch (URI_MATCHER.match(uri)) {
+                case 1 :
+                    return insert(uri, values, db, TABLE_CHAPITRE);
+                    case 3 :
+                return insert(uri, values, db, TABLE_PERSON);
+                default : return uri;
+
             }
-            if (uri.equals(ChapitreContentProvider.URI)) {
-                return insert(uri, values, db, ChapitreContentProvider.TABLE_NAME);
-            }
-            return uri;
         }
     }
 

@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <provider
-            android:authorities="com.example.contentprovider2.ChapitreContentProvider;com.example.contentprovider2.PersonContentProvider"
+            android:authorities="com.example.contentprovider2.BaseContentProvider"
             android:name=".BaseContentProvider"
             android:exported="true"/>
     </application>

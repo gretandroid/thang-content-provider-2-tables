@@ -1,5 +1,7 @@
 package com.example.contentprovider2;
 
+import static com.example.contentprovider2.ContractProvider.Chapitre.*;
+import static com.example.contentprovider2.ContractProvider.Person.*;
 import static com.example.contentprovider2.ContractProvider.*;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

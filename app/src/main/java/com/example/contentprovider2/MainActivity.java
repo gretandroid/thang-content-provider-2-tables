@@ -1,5 +1,7 @@
 package com.example.contentprovider2;
-
+import static com.example.contentprovider2.ContractProvider.*;
+import static com.example.contentprovider2.ContractProvider.Chapitre.*;
+import static com.example.contentprovider2.ContractProvider.Person.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -23,26 +25,26 @@ public class MainActivity extends AppCompatActivity {
 
     void insertChapitre() {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ContractProvider.COL_CHAPITRE_NAME, "Chapitre 2");
-        contentValues.put(ContractProvider.COL_CHAPITRE_DESCRIPTION, "Chapitre 2 Description");
+        contentValues.put(COL_CHAPITRE_NAME, "Chapitre 2");
+        contentValues.put(COL_CHAPITRE_DESCRIPTION, "Chapitre 2 Description");
 
-        getContentResolver().insert(ChapitreContentProvider.URI, contentValues);
+        getContentResolver().insert(URI_CHAPITRE, contentValues);
 
     }
 
     void insertPerson() {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ContractProvider.COL_PERSON_NAME, "Person 2");
-        contentValues.put(ContractProvider.COL_PERSON_SURNAME, "Person2 Description");
+        contentValues.put(COL_PERSON_NAME, "Person 2");
+        contentValues.put(COL_PERSON_SURNAME, "Person2 Description");
 
-        getContentResolver().insert(PersonContentProvider.URI, contentValues);
+        getContentResolver().insert(URI_PERSON, contentValues);
 
     }
 
     @SuppressLint("Range")
     private void displayChapitre() {
         // Chapitre
-        Cursor cursor = getContentResolver().query(ChapitreContentProvider.URI,
+        Cursor cursor = getContentResolver().query(URI_CHAPITRE,
                 /* new String[] {ContractProvider.COL_CHAPITRE_NAME}*/ null,
                 null,
                 null,
@@ -51,12 +53,12 @@ public class MainActivity extends AppCompatActivity {
             String result = null;
             do {
                 result = new StringBuilder()
-                        .append(ContractProvider.COL_CHAPITRE_ID + " : ")
-                        .append(cursor.getString(cursor.getColumnIndex(ContractProvider.COL_CHAPITRE_ID)) + " ")
-                        .append(ContractProvider.COL_CHAPITRE_NAME + " : ")
-                        .append(cursor.getString(cursor.getColumnIndex(ContractProvider.COL_CHAPITRE_NAME)) + " ")
-                        .append(ContractProvider.COL_CHAPITRE_DESCRIPTION + " : ")
-                        .append(cursor.getString(cursor.getColumnIndex(ContractProvider.COL_CHAPITRE_DESCRIPTION)) + " ")
+                        .append(COL_CHAPITRE_ID + " : ")
+                        .append(cursor.getString(cursor.getColumnIndex(COL_CHAPITRE_ID)) + " ")
+                        .append(COL_CHAPITRE_NAME + " : ")
+                        .append(cursor.getString(cursor.getColumnIndex(COL_CHAPITRE_NAME)) + " ")
+                        .append(COL_CHAPITRE_DESCRIPTION + " : ")
+                        .append(cursor.getString(cursor.getColumnIndex(COL_CHAPITRE_DESCRIPTION)) + " ")
                         .toString();
                 Log.d("App", result);
             } while (cursor.moveToNext());
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("Range")
     private void displayPerson() {
         // Chapitre
-        Cursor cursor = getContentResolver().query(PersonContentProvider.URI,
+        Cursor cursor = getContentResolver().query(URI_PERSON,
                 null,
                 null,
                 null,
@@ -77,12 +79,12 @@ public class MainActivity extends AppCompatActivity {
             String result = null;
             do {
                 result = new StringBuilder()
-                        .append(ContractProvider.COL_PERSON_ID + " : ")
-                        .append(cursor.getString(cursor.getColumnIndex(ContractProvider.COL_PERSON_ID)) + " ")
-                        .append(ContractProvider.COL_PERSON_NAME + " : ")
-                        .append(cursor.getString(cursor.getColumnIndex(ContractProvider.COL_PERSON_NAME)) + " ")
-                        .append(ContractProvider.COL_PERSON_SURNAME + " : ")
-                        .append(cursor.getString(cursor.getColumnIndex(ContractProvider.COL_PERSON_SURNAME)) + " ")
+                        .append(COL_PERSON_ID + " : ")
+                        .append(cursor.getString(cursor.getColumnIndex(COL_PERSON_ID)) + " ")
+                        .append(COL_PERSON_NAME + " : ")
+                        .append(cursor.getString(cursor.getColumnIndex(COL_PERSON_NAME)) + " ")
+                        .append(COL_PERSON_SURNAME + " : ")
+                        .append(cursor.getString(cursor.getColumnIndex(COL_PERSON_SURNAME)) + " ")
                         .toString();
                 Log.d("App", result);
             } while (cursor.moveToNext());
