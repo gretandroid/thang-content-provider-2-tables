@@ -24,11 +24,20 @@ public class BaseContentProvider extends ContentProvider {
 //    public static final Uri CONTENTURI =  Uri.parse("content://com.example.contentprovider2.BaseContentProvider");
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
+
+    public static final int TABLE_CHAPITRE_CODE = 1;
+
+    public static final int TABLE_CHAPITRE_ID_CODE = 2;
+
+    public static final int TABLE_PERSON_CODE = 3;
+
+    public static final int TABLE_PERSON_ID_CODE = 4;
+
     static {
-        URI_MATCHER.addURI(AUTHORITIES, TABLE_CHAPITRE, 1);
-        URI_MATCHER.addURI(AUTHORITIES, TABLE_CHAPITRE + "/#" , 2);
-        URI_MATCHER.addURI(AUTHORITIES, TABLE_PERSON, 3);
-        URI_MATCHER.addURI(AUTHORITIES, TABLE_PERSON + "/#", 4);
+        URI_MATCHER.addURI(AUTHORITIES, TABLE_CHAPITRE, TABLE_CHAPITRE_CODE);
+        URI_MATCHER.addURI(AUTHORITIES, TABLE_CHAPITRE + "/#" , TABLE_CHAPITRE_ID_CODE);
+        URI_MATCHER.addURI(AUTHORITIES, TABLE_PERSON, TABLE_PERSON_CODE);
+        URI_MATCHER.addURI(AUTHORITIES, TABLE_PERSON + "/#", TABLE_PERSON_ID_CODE);
     }
     // on declare le helper pour ouvrir une session à chaque lecture/écriture
     private DatabaseSQliteHelper dbHelper;
